@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News API Frontend</title>
+</head>
+<body>
+  <h1>News API Frontend</h1>
+  
+  <h2>Fetch N News Articles</h2>
+  <input type="text" id="countInput" placeholder="Enter number">
+  <button id="fetchArticles">Fetch Articles</button>
+  <ol id="articlesList"></ol>
+
+  <h2>Find Article by Title</h2>
+  <input type="text" id="titleInput" placeholder="Enter title">
+  <button id="findByTitle">Find by Title</button>
+  <ol id="findByTitleList"></ol>
+
+  <h2>Find Article by Author</h2>
+  <input type="text" id="authorInput" placeholder="Enter author">
+  <button id="findByAuthor">Find by Author</button>
+  <ol id="findByAuthorList"></ol>
+
+  <h2>Search by Keywords</h2>
+  <input type="text" id="keywordsInput" placeholder="Enter keywords">
+  <button id="searchByKeywords">Search</button>
+  <ol id="searchByKeywordsList"></ol>
+
+  <script>
+    const fetchArticlesButton = document.getElementById('fetchArticles');
+    const countInput = document.getElementById('countInput');
+    const articlesList = document.getElementById('articlesList');
+
+    const findByTitleButton = document.getElementById('findByTitle');
+    const titleInput = document.getElementById('titleInput');
+    const findByTitleList = document.getElementById('findByTitleList');
+
+    const findByAuthorButton = document.getElementById('findByAuthor');
+    const authorInput = document.getElementById('authorInput');
+    const findByAuthorList = document.getElementById('findByAuthorList');
+
+    const searchByKeywordsButton = document.getElementById('searchByKeywords');
+    const keywordsInput = document.getElementById('keywordsInput');
+    const searchByKeywordsList = document.getElementById('searchByKeywordsList');
+
+    const apiUrl = 'http://localhost:3000';
+
+    // Function to fetch and display articles
+    const fetchAndDisplayArticles = async (url, listElement) => {
+      listElement.innerHTML = '';
+
+      try {
+        const response = await fetch(url);
+        const articles = await response.json();
+        
+        articles.forEach(article => {
+          const li = document.createElement('li');
+          li.textContent = `Title-${article.title} Description- ${article.description}`;
+          listElement.appendChild(li);
+        });
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+      }
+    };
+
+    // Event listeners
+    fetchArticlesButton.addEventListener('click', () => {
+      const count = countInput.value;
+      fetchAndDisplayArticles(`${apiUrl}/articles/${encodeURIComponent(count)}`, articlesList);
+    });
+
+    findByTitleButton.addEventListener('click', () => {
+      const title = titleInput.value;
+      fetchAndDisplayArticles(`${apiUrl}/article/title/${encodeURIComponent(title)}`, findByTitleList);
+    });
+
+    findByAuthorButton.addEventListener('click', () => {
+      const author = authorInput.value;
+      fetchAndDisplayArticles(`${apiUrl}/article/author/${encodeURIComponent(author)}`, findByAuthorList);
+    });
+
+    searchByKeywordsButton.addEventListener('click', () => {
+      const keywords = keywordsInput.value;
+      fetchAndDisplayArticles(`${apiUrl}/search/${encodeURIComponent(keywords)}`, searchByKeywordsList);
+    });
+  </script>
+</body>
+</html>
