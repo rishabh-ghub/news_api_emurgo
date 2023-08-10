@@ -1,9 +1,12 @@
 {
+  "homepage": "http://rishabh-ghub.github.io/news_api_emurgo/index.html",
   "name": "newsapi",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "predeploy" : "node index.js",
+    "deploy" : "gh-pages",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
